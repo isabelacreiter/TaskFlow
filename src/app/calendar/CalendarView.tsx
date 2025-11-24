@@ -19,8 +19,11 @@ interface CalendarViewProps {
 export default function CalendarView({ events }: CalendarViewProps) {
   const router = useRouter();
 
-  const handleEventClick = (info: { event: { id: string } }) => {
-    router.push(`/task/${info.event.id}`);
+  type CalendarEventClick = { event: { id: string } };
+
+  const handleEventClick = (info: CalendarEventClick) => {
+    // navega para a página de detalhes da tarefa
+    router.push(`/tasks/${info.event.id}`);
   };
 
   return (
@@ -47,7 +50,7 @@ export default function CalendarView({ events }: CalendarViewProps) {
           day: 'Dia',
         }}
         height="auto"
-        eventClick={(info) => handleEventClick(info)}
+        eventClick={handleEventClick}
       />
     </div>
   );

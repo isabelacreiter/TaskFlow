@@ -11,12 +11,7 @@ export default function CalendarPage() {
   const events = useMemo(() => {
     return tasks
       .filter((t: any) => !!t.dueDate)
-      .map((t: any) => ({
-        id: t.id,
-        title: t.title,
-        date: String(t.dueDate).split('T')[0],
-        color: t.priority === 'alta' ? '#dc2626' : '#16a34a', // ✅ exemplo: vermelho para alta prioridade, verde para normal
-      }));
+      .map((t: any) => ({ id: t.id, title: t.title, date: String(t.dueDate).split('T')[0] }));
   }, [tasks]);
 
   if (loading) return <div className="p-8 text-center">Carregando calendário...</div>;

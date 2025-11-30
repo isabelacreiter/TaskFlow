@@ -12,26 +12,10 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-let app: FirebaseApp | null = null;
+// 🔹 Inicializa imediatamente, mas garantindo que só uma instância seja criada
+const app: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-export const getFirebaseApp = (): FirebaseApp => {
-  if (!app) {
-    if (typeof window === 'undefined') {
-      // Opcional: lançar erro ou retornar mock em SSR, mas geralmente não é usado no server
-      throw new Error('Firebase cannot be initialized on the server.');
-    }
-    const apps = getApps();
-    app = apps.length ? apps[0] : initializeApp(firebaseConfig);
-  }
-  return app;
-};
-
-export const getAuthInstance = (): Auth => {
-  const app = getFirebaseApp();
-  return getAuth(app);
-};
-
-export const getDbInstance = (): Firestore => {
-  const app = getFirebaseApp();
-  return getFirestore(app);
-};
+// 🔹 Exporta instâncias prontas
+export const firebaseApp = app;
+export const auth: Auth = getAuth(app);
+export const db: Firestore = getFirestore(app);

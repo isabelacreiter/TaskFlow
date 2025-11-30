@@ -10,6 +10,7 @@ interface CalendarEvent {
   id: string;
   title: string;
   date: string; // YYYY-MM-DD
+  color?: string; // opcional para definir cor
 }
 
 interface CalendarViewProps {
@@ -22,7 +23,6 @@ export default function CalendarView({ events }: CalendarViewProps) {
   type CalendarEventClick = { event: { id: string } };
 
   const handleEventClick = (info: CalendarEventClick) => {
-    // navega para a página de detalhes da tarefa
     router.push(`/tasks/${info.event.id}`);
   };
 
@@ -35,7 +35,9 @@ export default function CalendarView({ events }: CalendarViewProps) {
         events={events.map(e => ({
           id: e.id,
           title: e.title,
-          date: e.date, // FullCalendar aceita 'date' para eventos de dia inteiro
+          date: e.date,
+          backgroundColor: e.color ?? '#2563eb', // ✅ cor padrão (azul Tailwind)
+          textColor: '#fff',                     // ✅ texto branco para contraste
         }))}
         locale="pt-br"
         headerToolbar={{

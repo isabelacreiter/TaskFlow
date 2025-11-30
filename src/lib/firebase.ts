@@ -12,27 +12,26 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-let firebaseApp: FirebaseApp | null = null;
+let app: FirebaseApp | null = null;
 
-export const getFirebaseApp = (): FirebaseApp | null => {
-  // Don't initialize Firebase during SSR/prerender — only on the client
-  if (typeof window === 'undefined') return null;
-
-  if (!firebaseApp) {
-    firebaseApp = getApps().length ? (getApps()[0] as FirebaseApp) : initializeApp(firebaseConfig);
+export const getFirebaseApp = (): FirebaseApp => {
+  if (!app) {
+    if (typeof window === 'undefined') {
+      // Opcional: lançar erro ou retornar mock em SSR, mas geralmente não é usado no server
+      throw new Error('Firebase cannot be initialized on the server.');
+    }
+    const apps = getApps();
+    app = apps.length ? apps[0] : initializeApp(firebaseConfig);
   }
-
-  return firebaseApp;
+  return app;
 };
 
-export const getAuthInstance = (): Auth | null => {
+export const getAuthInstance = (): Auth => {
   const app = getFirebaseApp();
-  if (!app) return null;
   return getAuth(app);
 };
 
-export const getDbInstance = (): Firestore | null => {
+export const getDbInstance = (): Firestore => {
   const app = getFirebaseApp();
-  if (!app) return null;
   return getFirestore(app);
 };

@@ -35,8 +35,12 @@ export function TaskForm({ onSubmit, initialData }: {
       ? {
           ...initialData,
           subtasks: (initialData.subtasks || []).map((s) => ({ id: s.id, title: s.title })),
+          status: initialData.status || 'todo',
         }
-      : undefined,
+      : {
+          status: 'todo',
+          priority: 'medium',
+        },
   });
 
   const addSubtask = () => setSubtasks([...subtasks, { id: generateId(), title: '' }]);
@@ -53,9 +57,9 @@ export function TaskForm({ onSubmit, initialData }: {
     onSubmit({
       ...data,
       subtasks: formattedSubtasks,
-      dueDate: data.dueDate,
-      priority: data.priority as Task['priority'],
-      status: data.status as Task['status'],
+      dueDate: data.dueDate || '',
+      priority: (data.priority || 'medium') as Task['priority'],
+      status: (data.status || 'todo') as Task['status'],
     });
   };
 
@@ -91,6 +95,18 @@ export function TaskForm({ onSubmit, initialData }: {
             <option value="high">Alta</option>
           </select>
         </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-2">Status</label>
+        <select
+          {...register('status')}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="todo">A Fazer</option>
+          <option value="doing">Fazendo</option>
+          <option value="done">Concluído</option>
+        </select>
       </div>
 
       <div>

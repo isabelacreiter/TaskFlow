@@ -4,7 +4,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirebaseAuth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { loginSchema } from '../../lib/validation/authSchema';
 import { Button } from '../../components/ui/Button';
@@ -33,7 +34,9 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(getAuth(), data.email, data.password);
+      const auth = getFirebaseAuth();
+      if (!auth) throw new Error('Firebase não inicializado');
+      await signInWithEmailAndPassword(auth, data.email, data.password);
       router.push('/dashboard');
     } catch (err: any) {
       if (err.code === 'auth/invalid-credential') {

@@ -6,7 +6,7 @@ import { useTasks } from '@/hooks/useTasks';
 import { TaskForm } from '@/components/tasks/TaskForm';
 import { useParams, useRouter } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
-import { getDbInstance } from '@/lib/firebase';
+import { getFirebaseFirestore } from '@/lib/firebase';
 import { Task } from '@/types';
 
 export default function TaskDetailPage() {
@@ -18,7 +18,7 @@ export default function TaskDetailPage() {
 
   useEffect(() => {
     const fetchTask = async () => {
-      const db = getDbInstance();
+      const db = getFirebaseFirestore();
       if (!db) {
         setLoading(false);
         return;

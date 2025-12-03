@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-size: 16px;
 }
 
 @theme inline {
@@ -23,4 +24,112 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  font-size: var(--font-size);
+  /* Acessibilidade: suporta preferência de movimento reduzido */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
 }
+
+/* Acessibilidade: Contraste Alto */
+body.high-contrast {
+  --background: #000000;
+  --foreground: #ffff00;
+}
+
+body.high-contrast a {
+  color: #00ffff;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+body.high-contrast button {
+  border: 2px solid #ffff00;
+  font-weight: bold;
+}
+
+body.high-contrast input,
+body.high-contrast textarea,
+body.high-contrast select {
+  border: 2px solid #ffff00 !important;
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+/* Foco visível para navegação por teclado */
+:focus {
+  outline: 3px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+button:focus,
+a:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 3px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+/* Acessibilidade: Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+}
+
+.skip-to-main:focus {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  padding: 8px;
+  background-color: #4f46e5;
+  color: white;
+  text-decoration: none;
+}
+
+/* Acessibilidade: Melhor espaçamento e legibilidade */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+
+/* Acessibilidade: Underline para links */
+a {
+  text-decoration: underline;
+  transition: opacity 0.2s;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Acessibilidade: Área de clique suficiente */
+button,
+a[role="button"],
+input[type="checkbox"],
+input[type="radio"] {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* VLibras Widget */
+#vlibras-widget {
+  position: fixed;
+  bottom: 80px;
+  right: 4px;
+  z-index: 30;
+}
+

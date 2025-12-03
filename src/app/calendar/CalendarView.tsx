@@ -4,7 +4,6 @@
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { useRouter } from 'next/navigation';
 
 interface CalendarEvent {
   id: string;
@@ -14,20 +13,18 @@ interface CalendarEvent {
 
 interface CalendarViewProps {
   events: CalendarEvent[];
+  onEventClick: (taskId: string) => void;
 }
 
-export default function CalendarView({ events }: CalendarViewProps) {
-  const router = useRouter();
-
+export default function CalendarView({ events, onEventClick }: CalendarViewProps) {
   type CalendarEventClick = { event: { id: string } };
 
   const handleEventClick = (info: CalendarEventClick) => {
-    // navega para a página de detalhes da tarefa
-    router.push(`/tasks/${info.event.id}`);
+    onEventClick(info.event.id);
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 bg-white dark:bg-zinc-950 rounded-lg shadow-md">
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -35,7 +32,7 @@ export default function CalendarView({ events }: CalendarViewProps) {
         events={events.map(e => ({
           id: e.id,
           title: e.title,
-          date: e.date, // FullCalendar aceita 'date' para eventos de dia inteiro
+          date: e.date,
         }))}
         locale="pt-br"
         headerToolbar={{

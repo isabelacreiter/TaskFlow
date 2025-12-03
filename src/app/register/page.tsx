@@ -36,9 +36,8 @@ export default function RegisterPage() {
     setError('');
     setLoading(true);
     try {
-      // Acessa auth dinamicamente, evitando análise estática falha
-      const auth = firebaseLib.getAuthInstance();
-      if (!auth) throw new Error('Firebase não inicializado no servidor');
+      const auth = firebaseLib.getFirebaseAuth();
+      if (!auth) throw new Error('Firebase não inicializado');
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       router.push('/dashboard');
     } catch (err: any) {
